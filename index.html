@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节流防抖</title>
+</head>
+<body>
+<input type="text" id="input">
+<div style="width: 300px;height: 3000px;background: #795da3" id="box"></div>
+</body>
+<script>
+
+    /**
+     * 用户触发事件过于频繁，只执行最后一次，例如oninput事件
+     * @type {HTMLElement}
+     */
+    let input = document.getElementById('input');
+    // 面向过程的写法
+    // let timer = null;
+    // input.oninput = function () {
+    //     if (timer) {
+    //         clearTimeout(timer)
+    //     }
+    //     timer = setTimeout(() => {
+    //         console.log(this.value)
+    //     }, 500)
+    // }
+
+    /**
+     * 封装成函数调用
+     * @param fn
+     * @param delay
+     * @returns {Function}
+     */
+    input.oninput = debounce(function () {
+        console.log(this.value)
+    }, 500);
+
+    function debounce(fn, delay) {
+        let timer = null;
+        return function () {
+            if (timer) {
+                clearTimeout(timer)
+            }
+            timer = setTimeout(() => {
+                fn.call(this)
+            }, delay)
+        }
+    }
+
+    let flag = true;
+    // 面向过程的写法
+    // document.onscroll = function () {
+    //     if (flag) {
+    //         setTimeout(() => {
+    //             console.log(11);
+    //             flag = true
+    //         }, 500)
+    //     }
+    //     flag = false
+    // };
+    /**
+     * 封装节流：对于高频事件的执行，限制它的执行次数
+     */
+    function throttle(fn, delay) {
+        let flag = true;
+        return function () {
+            if (flag) {
+                setTimeout(() => {
+                    fn.call(this);
+                    flag = true
+                }, delay)
+            }
+            flag = false
+        }
+    }
+
+    document.onscroll = throttle(() => {
+        console.log('scroll被触发了')
+    }, 500)
+</script>
+</html>

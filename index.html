@@ -11,7 +11,7 @@
 <script>
 
     /**
-     * 用户触发事件过于频繁，只执行最后一次，例如oninput事件
+     * 防抖：用户触发事件过于频繁，只执行最后一次，例如oninput事件
      * @type {HTMLElement}
      */
     let input = document.getElementById('input');
@@ -27,7 +27,7 @@
     // }
 
     /**
-     * 封装成函数调用
+     * 封装防抖函数调用
      * @param fn
      * @param delay
      * @returns {Function}
@@ -48,6 +48,10 @@
         }
     }
 
+    
+     /**
+     * 节流：对于高频事件的执行，限制它的执行次数
+     */
     let flag = true;
     // 面向过程的写法
     // document.onscroll = function () {
@@ -59,9 +63,7 @@
     //     }
     //     flag = false
     // };
-    /**
-     * 封装节流：对于高频事件的执行，限制它的执行次数
-     */
+   // 封装节流函数
     function throttle(fn, delay) {
         let flag = true;
         return function () {
